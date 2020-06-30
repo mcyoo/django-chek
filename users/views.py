@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from . import models
 import json
+from django.core import serializers
 
 
 @csrf_exempt
@@ -18,7 +19,13 @@ def save_token(request):
             # domain_dict = {}
             # i = 0
             if user.domains.count() > 0:
-                return redirect("domains:data_obj")
+                data = serializers.serialize(
+                    "json", user.domains.all(), fields=("url", "title", "change")
+                )
+                response = HttpResponse(content=data)
+                return response
+
+                # return redirect("domains:data_obj")
                 """
                 for domain_data in user.domains.all():
                     domain_dict.update(
