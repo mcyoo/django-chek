@@ -10,7 +10,7 @@ class User(core_models.TimeStampedModel):
 
     PHONE_CHOICES = ((ANDROID, "Android"), (APPLE, "ios"), (OTHER, "Other"))
 
-    token = models.CharField(max_length=150)
+    token = models.CharField(max_length=200)
     user_os = models.CharField(choices=PHONE_CHOICES, max_length=10, blank=True)
     user_ver = models.CharField(max_length=50, blank=True)
 

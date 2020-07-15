@@ -25,7 +25,7 @@ SECRET_KEY = "v@5i8#y&t#foo$rwdn@mm2%aaeni*m$dy%ee_7x_i((w(%98oh"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["81238edcca94.ngrok.io"]
+ALLOWED_HOSTS = ["ed201ed84af5.ngrok.io", "10.0.2.2", "127.0.0.1"]
 
 
 # Application definition
@@ -45,13 +45,11 @@ PROJECT_APPS = [
     "domains.apps.DomainsConfig",
 ]
 
-THIRD_PARTY_APPS = ["corsheaders", "exponent_server_sdk", "rest_framework"]
+THIRD_PARTY_APPS = ["corsheaders", "rest_framework"]
 
 INSTALLED_APPS = DJANGO_APP + PROJECT_APPS + THIRD_PARTY_APPS
 
-REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny",]
-}
+# REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -129,3 +127,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = "/static/"
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+}
+
+if not DEBUG:
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
+        "rest_framework.renderers.JSONRenderer",
+    ]

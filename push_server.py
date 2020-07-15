@@ -1,12 +1,13 @@
 from firebase_admin import messaging
 from firebase_admin import credentials
 import firebase_admin
+from firebase_admin import auth
 
 cred = credentials.Certificate("fir-test-d20b3-firebase-adminsdk-u3j7c-f95f9b1e7d.json")
 firebase_admin.initialize_app(cred)
 
 # This registration token comes from the client FCM SDKs.
-registration_token = "eakZIZkx6Zg:APA91bEXEQKySn45bG3vUm6B3klQpi4oKkwoQf1j_YcWS31orZK7kZEMq5q0RK0wwrr68Y8HPT29HpfQtcWng634SUKpBkUMBorvaZWXcTKfnY2Y5VyBb8g96yZUmHf837dmttSqbhuG"
+registration_token = "foc1bYvVmj4:APA91bGuO5gx1y1uSUSmtlbo3nB78dv3s0yldalB868-37qAiMQ4g9NndgmaTAyG8xl9iyVlrHTdPksnwPSR5qRt1Qy2AHxK5T_3JN4lXjghlULKkahbg2_V9tcvzUtHKqSr82_QD0wJ"
 
 # See documentation on defining a message payload.
 message = messaging.Message(

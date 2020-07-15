@@ -1,15 +1,45 @@
-from django.shortcuts import HttpResponse
-
-# from django.views.decorators.csrf import csrf_exempt
-from . import models
-import json
-
-from django.core import serializers
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework import status
+from domains.serializers import DomainSerializer
+from users.serializers import UserSerializer
+from .models import User
+import jwt
+from django.conf import settings
 
 
+class TokenGetView(APIView):
+    def get(self, request):
+        try:
+            header = request.META.get("HTTP_AUTHORIZATION")
+            print(header)
+            if header is not None:
+                # _, token = header.split(" ")
+                token = header
+                print(token)
+                decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+                pk = decoded.get("pk")
+                user = User.objects.get(pk=pk)
+                return Response(DomainSerializer(user.domains.all(), many=True).data)
+        except (ValueError, User.DoesNotExist):
+            pass
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self, request):
+        print(request.data)
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            encoded_jwt = jwt.encode(
+                {"pk": user.pk}, settings.SECRET_KEY, algorithm="HS256"
+            )
+            return Response(data={"token": encoded_jwt})
+            # return Response(DomainSerializer(user.domains.all(), many=True).data)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+"""
 @api_view(["GET", "POST"])
 def save_token(request):
     if request.method == "POST":
@@ -20,33 +50,14 @@ def save_token(request):
         print(token)
         try:
             user = models.User.objects.get(token=token)
-            # domain_dict = {}
-            # i = 0
             if user.domains.count() > 0:
                 data = serializers.serialize(
                     "json", user.domains.all(), fields=("url", "title", "change")
                 )
                 response = HttpResponse(content=data)
                 return response
-
-                # return redirect("domains:data_obj")
-                """
-                for domain_data in user.domains.all():
-                    domain_dict.update(
-                        {
-                            i: {
-                                "title": domain_data.title,
-                                "url": domain_data.url,
-                                "change": domain_data.change,
-                            }
-                        }
-                    )
-                    i += 1
-                    
-                print(domain_dict)
-            return JsonResponse(domain_dict, json_dumps_params={"ensure_ascii": True})
-            """
-
         except models.User.DoesNotExist:
             models.User.objects.create(token=token, user_os=user_os, user_ver=user_ver)
     return Response(status=status.HTTP_200_OK)
+"""
+

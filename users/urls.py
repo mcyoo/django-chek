@@ -4,5 +4,5 @@ from . import views
 app_name = "users"
 
 urlpatterns = [
-    path("token/", views.save_token, name="save-token"),
+    path("token/", views.TokenGetView.as_view(), name="token"),
 ]
