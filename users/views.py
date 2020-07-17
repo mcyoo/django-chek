@@ -12,11 +12,9 @@ class TokenGetView(APIView):
     def get(self, request):
         try:
             header = request.META.get("HTTP_AUTHORIZATION")
-            print(header)
             if header is not None:
                 # _, token = header.split(" ")
                 token = header
-                print(token)
                 decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
                 pk = decoded.get("pk")
                 user = User.objects.get(pk=pk)

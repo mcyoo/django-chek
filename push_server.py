@@ -7,7 +7,7 @@ cred = credentials.Certificate("fir-test-d20b3-firebase-adminsdk-u3j7c-f95f9b1e7
 firebase_admin.initialize_app(cred)
 
 # This registration token comes from the client FCM SDKs.
-registration_token = "foc1bYvVmj4:APA91bGuO5gx1y1uSUSmtlbo3nB78dv3s0yldalB868-37qAiMQ4g9NndgmaTAyG8xl9iyVlrHTdPksnwPSR5qRt1Qy2AHxK5T_3JN4lXjghlULKkahbg2_V9tcvzUtHKqSr82_QD0wJ"
+registration_token = "dGIoRAm4x9g:APA91bEeKPfsRpugtd-hs94GAn1uH350jwfNmJV3ZA8bwwV3pqkiOmPa5LdMnNpQ0DowciKmq1pclbUCL7KsPaPFE8grZdimiZkEi_3_cmyhvCjcuT1ZvRcs-gqHxT5o3wV0nKlfGEC2"
 
 # See documentation on defining a message payload.
 message = messaging.Message(
