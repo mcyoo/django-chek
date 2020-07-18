@@ -9,25 +9,32 @@ from django.conf import settings
 
 
 class DomainView(APIView):
-    def get(self, request):
+    def post(self, request):
+        print(request.data)
         try:
             header = request.META.get("HTTP_AUTHORIZATION")
             if header is not None:
-                # _, token = header.split(" ")
                 token = header
                 decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
                 pk = decoded.get("pk")
                 user = User.objects.get(pk=pk)
-                return Response(DomainSerializer(user.domains.all(), many=True).data)
-        except (ValueError, User.DoesNotExist):
+
+                serializer = DomainSerializer(
+                    data=request.data, context={"token": user}
+                )
+                if serializer.is_valid():
+                    domain = serializer.save()
+                    return Response(status=status.HTTP_200_OK)
+                # return Response(DomainSerializer(user.domains.all(), many=True).data)
+        except (ValueError, User.DoesNotExist, Domain.DoesNotExist, IndexError):
             pass
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def post(self, request):
+    def put(self, request):
         print(request.data)
-        index = request.data.get("index")
-        print(index)
         try:
+            index = request.data.get("index")
+            print(index)
             header = request.META.get("HTTP_AUTHORIZATION")
             if header is not None:
                 token = header
