@@ -8,8 +8,8 @@ class Domain(core_models.TimeStampedModel):
     token = models.ForeignKey(
         "users.User", related_name="domains", on_delete=models.CASCADE
     )
-    title = models.CharField(max_length=20, default="", blank=True)
-    html = models.TextField(blank=True)
+    title = models.CharField(max_length=100, default="", blank=True)
+    html = models.CharField(max_length=50, default="", blank=True)
     change = models.BooleanField(default=False)
 
     def __str__(self):
