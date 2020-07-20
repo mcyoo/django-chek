@@ -51,6 +51,29 @@ class DomainView(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+class Toggle_State(APIView):
+    def put(self, request):
+        print(request.data)
+        try:
+            index = request.data.get("index")
+            print(index)
+            header = request.META.get("HTTP_AUTHORIZATION")
+            if header is not None:
+                token = header
+                decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+                pk = decoded.get("pk")
+                user = User.objects.get(pk=pk)
+                domain = user.domains.all()[index]
+                print(domain)
+                domain.change = False
+                domain.save()
+                return Response(status=status.HTTP_200_OK)
+                # return Response(DomainSerializer(user.domains.all(), many=True).data)
+        except (ValueError, User.DoesNotExist, Domain.DoesNotExist, IndexError):
+            pass
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 """
 @api_view(["GET", "POST"])
 def save_token(request):
