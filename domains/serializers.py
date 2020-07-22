@@ -23,8 +23,8 @@ class DomainSerializer(serializers.ModelSerializer):
         return content
 
     def append_data(self, url):
-        request = Request(url, headers={"User-Agent": "Mozilla/5.0"})
         try:
+            request = Request(url, headers={"User-Agent": "Mozilla/5.0"})
             response = urlopen(request)
             page = response.read()
             return self.get_title(page), self.make_md5(page)

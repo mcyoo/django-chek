@@ -19,22 +19,22 @@ class TokenGetView(APIView):
                 pk = decoded.get("pk")
                 user = User.objects.get(pk=pk)
                 return Response(DomainSerializer(user.domains.all(), many=True).data)
-        except (ValueError, User.DoesNotExist):
+        except:
             pass
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
-        print(request.data)
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            encoded_jwt = jwt.encode(
-                {"pk": user.pk}, settings.SECRET_KEY, algorithm="HS256"
-            )
-            return Response(data={"token": encoded_jwt})
-            # return Response(DomainSerializer(user.domains.all(), many=True).data)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        try:
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+                user = serializer.save()
+                encoded_jwt = jwt.encode(
+                    {"pk": user.pk}, settings.SECRET_KEY, algorithm="HS256"
+                )
+                return Response(data={"token": encoded_jwt})
+        except:
+            pass
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 """

@@ -26,7 +26,7 @@ def send_to_androidapp(token, title, url):
         android=messaging.AndroidConfig(
             notification=messaging.AndroidNotification(
                 title=title,
-                body="변화가 감지됬어요!",
+                body="페이지 변경 감지!",
                 default_sound=True,
                 visibility="public",
                 priority="high",

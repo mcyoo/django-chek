@@ -25,8 +25,8 @@ class DomainView(APIView):
                 if serializer.is_valid():
                     domain = serializer.save()
                     return Response(status=status.HTTP_200_OK)
-                # return Response(DomainSerializer(user.domains.all(), many=True).data)
-        except (ValueError, User.DoesNotExist, Domain.DoesNotExist, IndexError):
+                # (ValueError, User.DoesNotExist, Domain.DoesNotExist, IndexError)
+        except:
             pass
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -45,8 +45,7 @@ class DomainView(APIView):
                 print(domain)
                 domain.delete()
                 return Response(status=status.HTTP_200_OK)
-                # return Response(DomainSerializer(user.domains.all(), many=True).data)
-        except (ValueError, User.DoesNotExist, Domain.DoesNotExist, IndexError):
+        except:
             pass
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -68,8 +67,7 @@ class Toggle_State(APIView):
                 domain.change = False
                 domain.save()
                 return Response(status=status.HTTP_200_OK)
-                # return Response(DomainSerializer(user.domains.all(), many=True).data)
-        except (ValueError, User.DoesNotExist, Domain.DoesNotExist, IndexError):
+        except:
             pass
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
