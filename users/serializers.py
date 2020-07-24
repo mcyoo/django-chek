@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
     # read_only_fields = ("id", "superhost", "avatar")
 
     def validate_token(self, value):
-        if len(value) != 152:
+        if len(value) < 150:
             raise serializers.ValidationError("invaild token")
         return value
 
