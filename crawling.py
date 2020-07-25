@@ -30,7 +30,7 @@ def send_to_app(token, title, url):
                     payload=messaging.APNSPayload(
                         aps=messaging.Aps(
                             alert=messaging.ApsAlert(title=title, body="페이지 변경 감지!",),
-                            badge=1,
+                            # badge=1,
                         ),
                     ),
                 ),
