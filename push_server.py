@@ -7,9 +7,10 @@ cred = credentials.Certificate("fir-test-d20b3-firebase-adminsdk-u3j7c-f95f9b1e7
 firebase_admin.initialize_app(cred)
 
 # This registration token comes from the client FCM SDKs.
-registration_token = "fnW2sId-8fI:APA91bHn8ol60dqGk1KkZYQXLj39FZVGZ_2nNKMFCzVEWVfLybQC13MXUX0N7hGyKz_RdWmx7CA9nzQVSfD_K89ytP4ZDV-cYl91oLq8GjUXa494A1kz59iKae1aqq3EA9iL-l5_duAQ"
+registration_token = "e9pZKHuwtEoYqMLNdisG1u:APA91bFxumfW8r9lZ98L5Y4nTJzLm12uv8dWHkbGsRSwP1tkoZTvPzCOufvNvocoFV63AvTjmz226ipoi0O4UriDRBKQ-zFp7eUeWcdz76VSWzLFhFE4efBt6yIJUUaozRIhMtGWnhGl"
 
 # See documentation on defining a message payload.
+"""
 message = messaging.Message(
     android=messaging.AndroidConfig(
         notification=messaging.AndroidNotification(
@@ -21,6 +22,18 @@ message = messaging.Message(
         )
     ),
     # notification=messaging.Notification(title="변경!", body="변화가 감지됬어요!",),
+    token=registration_token,
+)
+"""
+message = messaging.Message(
+    notification=messaging.Notification(title="test", body="페이지 변경 감지!"),
+    apns=messaging.APNSConfig(
+        payload=messaging.APNSPayload(
+            aps=messaging.Aps(
+                alert=messaging.ApsAlert(title="test", body="페이지 변경 감지!",), badge=42,
+            ),
+        ),
+    ),
     token=registration_token,
 )
 

@@ -24,14 +24,13 @@ def send_to_app(token, title, url):
     try:
         user = User.objects.get(token=token)
         if user.user_os == "ios":
-
             message = messaging.Message(
                 # notification=messaging.Notification(title=title, body="페이지 변경 감지!"),
                 apns=messaging.APNSConfig(
                     payload=messaging.APNSPayload(
                         aps=messaging.Aps(
                             alert=messaging.ApsAlert(title=title, body="페이지 변경 감지!",),
-                            badge=42,
+                            badge=1,
                         ),
                     ),
                 ),
