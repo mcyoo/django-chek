@@ -19,21 +19,41 @@ cred = credentials.Certificate("fir-test-d20b3-firebase-adminsdk-u3j7c-f95f9b1e7
 initialize_app(cred)
 
 
-def send_to_androidapp(token, title, url):
+def send_to_app(token, title, url):
     registration_token = token
+    try:
+        user = User.objects.get(token=token)
+        if user.user_os == "ios":
 
-    message = messaging.Message(
-        android=messaging.AndroidConfig(
-            notification=messaging.AndroidNotification(
-                title=title,
-                body="페이지 변경 감지!",
-                default_sound=True,
-                visibility="public",
-                priority="high",
+            message = messaging.Message(
+                # notification=messaging.Notification(title=title, body="페이지 변경 감지!"),
+                apns=messaging.APNSConfig(
+                    payload=messaging.APNSPayload(
+                        aps=messaging.Aps(
+                            alert=messaging.ApsAlert(title=title, body="페이지 변경 감지!",),
+                            badge=42,
+                        ),
+                    ),
+                ),
+                token=registration_token,
             )
-        ),
-        token=registration_token,
-    )
+
+        else:
+            message = messaging.Message(
+                android=messaging.AndroidConfig(
+                    notification=messaging.AndroidNotification(
+                        title=title,
+                        body="페이지 변경 감지!",
+                        default_sound=True,
+                        visibility="public",
+                        priority="high",
+                    )
+                ),
+                token=registration_token,
+            )
+    except:
+        return False
+
     try:
         response = messaging.send(message)
         print("Successfully sent message:", response)
@@ -122,7 +142,7 @@ def main_checkChange(new_data):
                 # print(domain_title, domain_url, domain_token, domain_html)
                 if new_data[i][1] != domain_html:
                     print(domain_title, "is chage!!")
-                    send_to_androidapp(domain_token, domain_title, domain_url)
+                    send_to_app(domain_token, domain_title, domain_url)
                     change_DB(i, new_data[i])
 
 
